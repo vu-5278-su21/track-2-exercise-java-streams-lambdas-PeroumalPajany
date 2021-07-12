@@ -1,7 +1,6 @@
 package edu.vanderbilt.cs.streams;
 
 import java.util.List;
-import java.util.UUID;
 import java.util.function.Function;
 import java.util.function.ToDoubleFunction;
 import java.util.stream.IntStream;

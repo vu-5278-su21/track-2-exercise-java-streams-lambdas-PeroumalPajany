@@ -1,7 +1,5 @@
 package edu.vanderbilt.cs.streams;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -36,14 +34,14 @@ public class BikeStats {
 	 */
 	public Stream<BikeRide.DataFrame> averagedDataFrameStream(int windowSize) {
 
-		return StreamUtils
-				.slidingWindow(ride.fusedFramesStream().collect(Collectors.toList()), windowSize)
+		return StreamUtils.slidingWindow(ride.fusedFramesStream().collect(Collectors.toList()), windowSize)
 				.map(s -> new DataFrame(s.stream().findFirst().get().getCoordinate(),
 						s.stream().mapToDouble(DataFrame::getGrade).average().getAsDouble(),
 						s.stream().mapToDouble(DataFrame::getAltitude).average().getAsDouble(),
 						s.stream().mapToDouble(DataFrame::getVelocity).average().getAsDouble(),
 						s.stream().mapToDouble(DataFrame::getHeartRate).average().getAsDouble()))
-				.collect(Collectors.toList()).stream();
+				.collect(Collectors.toList())
+				.stream();
 
 	}
 
@@ -57,8 +55,11 @@ public class BikeStats {
 	// the same.
 	//
 	public Stream<LatLng> locationsOfStops() {
+		
 
-		return ride.fusedFramesStream().filter(f -> f.getVelocity() == 0.0).map(x -> x.getCoordinate())
+		return ride.fusedFramesStream()
+				.filter(f -> f.getVelocity() == 0.0)
+				.map(x -> x.getCoordinate())
 				.collect(Collectors.toList()).stream();
 
 	}
