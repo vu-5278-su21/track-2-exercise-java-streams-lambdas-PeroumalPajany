@@ -1,18 +1,13 @@
 package edu.vanderbilt.cs.streams;
 
-import java.io.FileInputStream;
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.stream.DoubleStream;
-import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class BikeRide {
 
@@ -107,71 +102,73 @@ public class BikeRide {
                     @JsonProperty("velocity_smooth") DataStream velocity,
                     @JsonProperty("grade_smooth") DataStream grade,
                     @JsonProperty("altitude") DataStream altitude,
-                    @JsonProperty("latlng") LatLngStream coordinates) {
+                    @JsonProperty("latlng") LatLngStream coordinates)
+    {
 
         super();
         this.heartRate = heartRate.data;
         this.velocity = velocity.data;
         this.grade = grade.data;
         this.altitude = altitude.data;
-        this.coordinates = coordinates.data;
+        this.coordinates = coordinates.data;    
     }
 
-    // @ToDo:
-    //
-    // Implement this method so it returns a
-    // stream of the specified values
-    //
-    // Hint: see Arrays.stream(...)
-    //
+    /**
+     * 
+     * @return
+     */
     public DoubleStream heartRateStream() {
-        return DoubleStream.empty();
+    	
+        return DoubleStream.of(this.heartRate);
     }
 
-    // @ToDo:
-    //
-    // Implement this method so it returns a
-    // stream of the specified values
-    //
+    /**
+     * 
+     * @return
+     */
     public DoubleStream velocityStream() {
-        return DoubleStream.empty();
+        return DoubleStream.of(this.velocity);
     }
 
-    // @ToDo:
-    //
-    // Implement this method so it returns a
-    // stream of the specified values
+    /**
+     * 
+     * @return
+     */
     public DoubleStream gradeStream() {
-        return DoubleStream.empty();
+        return DoubleStream.of(this.grade);
     }
 
-    // @ToDo:
-    //
-    // Implement this method so it returns a
-    // stream of the specified values
+    /**
+     * 
+     * @return
+     */
     public DoubleStream altitudeStream() {
-        return DoubleStream.empty();
+    	
+    	return DoubleStream.of(this.altitude);
     }
 
-    // @ToDo:
-    //
-    // Implement this method so it returns a
-    // stream of the specified values
-    public Stream<LatLng> coordinateStream() {
-        return Stream.empty();
+    /**
+     * 
+     * @return
+     */
+    public Stream<LatLng> coordinateStream() {    	
+    	 return Stream.of(this.coordinates);
+    	
     }
 
 
-    // @ToDo:
-    //
-    // Create a method that returns a stream of
-    // DataFrame objects, where each frame is built from
-    // the coordinate, heart rate, grade, etc. that
-    // occurs at each index in each of the corresponding
-    // data arrays (e.g., heartRate, velocity, etc.)
-    //
+    /**
+     * 
+     * @return
+     */
     public Stream<DataFrame> fusedFramesStream() {
-        return Stream.empty();
+    	   	
+    	List<DataFrame> list = new ArrayList<DataFrame>();
+    	for(int i = 0; i < heartRate.length; i++){
+    		DataFrame df = new DataFrame(coordinates[i],grade[i],altitude[i], velocity[i], heartRate[i]);
+    		list.add(df);
+        }    	
+    	return list.stream();
     }
 
 
@@ -180,6 +177,7 @@ public class BikeRide {
     // There is nothing to see here, move along.
     @JsonAnySetter
     public void setOther(String key, Object v) {
+    
     }
 
 
