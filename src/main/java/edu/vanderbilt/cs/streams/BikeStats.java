@@ -40,26 +40,23 @@ public class BikeStats {
 						s.stream().mapToDouble(DataFrame::getAltitude).average().getAsDouble(),
 						s.stream().mapToDouble(DataFrame::getVelocity).average().getAsDouble(),
 						s.stream().mapToDouble(DataFrame::getHeartRate).average().getAsDouble()))
-				.collect(Collectors.toList())
-				.stream();
+				.collect(Collectors.toList()).stream();
 
 	}
 
-	// Determine the stream of unique locations that the
-	// rider stopped. A location is unique if there are no
-	// other stops at the same latitude / longitude.
-	// The rider is stopped if velocity = 0.
-	//
-	// For the purposes of this assignment, you should use
-	// LatLng.equals() to determine if two locations are
-	// the same.
-	//
+	/**
+	 * Determine the stream of unique locations that the rider stopped. A location
+	 * is unique if there are no other stops at the same latitude / longitude. The
+	 * rider is stopped if velocity = 0.
+	 *
+	 * For the purposes of this assignment, you should use LatLng.equals() to
+	 * determine if two locations are the same. (implemented via distinct)
+	 * 
+	 * @return Stream<LatLng>
+	 */
 	public Stream<LatLng> locationsOfStops() {
-		
 
-		return ride.fusedFramesStream()
-				.filter(f -> f.getVelocity() == 0.0)
-				.map(x -> x.getCoordinate())
+		return ride.fusedFramesStream().distinct().filter(f -> f.getVelocity() == 0.0).map(x -> x.getCoordinate())
 				.collect(Collectors.toList()).stream();
 
 	}

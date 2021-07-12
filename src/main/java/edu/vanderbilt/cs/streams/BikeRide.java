@@ -158,7 +158,7 @@ public class BikeRide {
 	public Stream<DataFrame> fusedFramesStream() {
 
 		List<DataFrame> list = new ArrayList<DataFrame>();
-		for (int i = 0; i < heartRate.length; i++) {
+		for (int i = 0; i < coordinates.length; i++) {
 			list.add(new DataFrame(coordinates[i], grade[i], altitude[i], velocity[i], heartRate[i]));
 		}
 		return list.stream();
