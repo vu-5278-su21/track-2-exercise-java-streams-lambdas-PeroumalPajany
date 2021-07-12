@@ -36,19 +36,14 @@ public class BikeStats {
 	 */
 	public Stream<BikeRide.DataFrame> averagedDataFrameStream(int windowSize) {
 
-		Stream<List<DataFrame>> streamSlideWin = StreamUtils
-				.slidingWindow(ride.fusedFramesStream().collect(Collectors.toList()), windowSize);
-		List<DataFrame> avgList = new ArrayList<DataFrame>();
-
-		for (List<DataFrame> dfl : streamSlideWin.collect(Collectors.toList())) {
-			DataFrame avgDf = new DataFrame(dfl.stream().findFirst().get().getCoordinate(),
-					dfl.stream().mapToDouble(DataFrame::getGrade).average().getAsDouble(),
-					dfl.stream().mapToDouble(DataFrame::getAltitude).average().getAsDouble(),
-					dfl.stream().mapToDouble(DataFrame::getVelocity).average().getAsDouble(),
-					dfl.stream().mapToDouble(DataFrame::getHeartRate).average().getAsDouble());
-			avgList.add(avgDf);
-		}
-		return avgList.stream();
+		return StreamUtils
+				.slidingWindow(ride.fusedFramesStream().collect(Collectors.toList()), windowSize)
+				.map(s -> new DataFrame(s.stream().findFirst().get().getCoordinate(),
+						s.stream().mapToDouble(DataFrame::getGrade).average().getAsDouble(),
+						s.stream().mapToDouble(DataFrame::getAltitude).average().getAsDouble(),
+						s.stream().mapToDouble(DataFrame::getVelocity).average().getAsDouble(),
+						s.stream().mapToDouble(DataFrame::getHeartRate).average().getAsDouble()))
+				.collect(Collectors.toList()).stream();
 
 	}
 
@@ -63,8 +58,8 @@ public class BikeStats {
 	//
 	public Stream<LatLng> locationsOfStops() {
 
-		Stream<DataFrame> stream = ride.fusedFramesStream();
-		return stream.filter(f -> f.getVelocity() == 0.0).map(x -> x.getCoordinate()).collect(Collectors.toList()).stream();
+		return ride.fusedFramesStream().filter(f -> f.getVelocity() == 0.0).map(x -> x.getCoordinate())
+				.collect(Collectors.toList()).stream();
 
 	}
 

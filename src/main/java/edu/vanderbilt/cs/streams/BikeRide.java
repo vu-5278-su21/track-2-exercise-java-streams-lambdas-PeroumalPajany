@@ -117,8 +117,7 @@ public class BikeRide {
      * 
      * @return
      */
-    public DoubleStream heartRateStream() {
-    	
+    public DoubleStream heartRateStream() {    	
         return DoubleStream.of(this.heartRate);
     }
 
@@ -142,8 +141,7 @@ public class BikeRide {
      * 
      * @return
      */
-    public DoubleStream altitudeStream() {
-    	
+    public DoubleStream altitudeStream() {    	
     	return DoubleStream.of(this.altitude);
     }
 
@@ -152,8 +150,7 @@ public class BikeRide {
      * @return
      */
     public Stream<LatLng> coordinateStream() {    	
-    	 return Stream.of(this.coordinates);
-    	
+    	 return Stream.of(this.coordinates);    	
     }
 
 
@@ -165,8 +162,7 @@ public class BikeRide {
     	   	
     	List<DataFrame> list = new ArrayList<DataFrame>();
     	for(int i = 0; i < heartRate.length; i++){
-    		DataFrame df = new DataFrame(coordinates[i],grade[i],altitude[i], velocity[i], heartRate[i]);
-    		list.add(df);
+    		list.add(new DataFrame(coordinates[i],grade[i],altitude[i], velocity[i], heartRate[i]));
         }    	
     	return list.stream();
     }
